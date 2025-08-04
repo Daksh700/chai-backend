@@ -17,4 +17,18 @@ app.use(express.static("public")) // kuch file jaise image/pdf ho joh khudke pas
 
 app.use(cookieParser()) // user ke browser ki cookies access and set kar pao so kuch ways se secure cookies store kar sakte hai aur sirf hei unko access kar sakta hai and server hei unko remove kar sakta hai
 
+// routes import 
+
+import userRouter from './routes/user.routes.js'
+
+
+// routes declaration
+
+// http://localhost:8000/api/v1/users/register 
+app.use("/api/v1/users", userRouter);  // we wont use app.get here directly we will pass the control to userRouter which will then call then redirect to
+// the route and call the method by passing the contoller
+
+
+
+
 export default app;
