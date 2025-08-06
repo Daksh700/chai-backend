@@ -1,6 +1,7 @@
 import { Router } from "express";
-import registerUser from "../controllers/user.controller.js";
+import { loginUser, logoutUser, registerUser } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -16,6 +17,14 @@ router.route("/register").post(upload.fields(
         }
     ]
 ), registerUser)
+
+router.route("/login").post(loginUser)
+
+// secured routes
+
+router.route("/logout").post(verifyJWT, logoutUser)
+// ab yaha do methods dale hai toh router ko kaise samjhega phela konsa run karna hai and uske baad kuch run karna hai isliye humne
+// verifyJWT mei next() use kiya 
 
 
 export default router
