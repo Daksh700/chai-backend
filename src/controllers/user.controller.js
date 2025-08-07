@@ -154,8 +154,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     await User.findByIdAndUpdate(
         req.user_id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1
             }
         },
         {
@@ -418,7 +418,6 @@ const getWatchHistory = asyncHandler(async (req, res) => {
         {
             $match: {
                 _id: new mongoose.Types.ObjectId(req.user._id),
-
             }
         },
         {
