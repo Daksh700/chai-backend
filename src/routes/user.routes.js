@@ -20,11 +20,7 @@ router.route("/register").post(upload.fields(
 
 router.route("/login").post(loginUser)
 
-// secured routes
-
 router.route("/logout").post(verifyJWT, logoutUser)
-// ab yaha do methods dale hai toh router ko kaise samjhega phela konsa run karna hai and uske baad kuch run karna hai isliye humne
-// verifyJWT mei next() use kiya 
 
 router.route("/refresh-token").post(refreshAccessToken)
 

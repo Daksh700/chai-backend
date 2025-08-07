@@ -26,11 +26,11 @@ const userSchema = new Schema({
         index: true
     },
     avatar: {
-        type: String, // cloudinary url
+        type: String,
         required: true
     },
     coverImage: {
-        type: String, // cloudinary url
+        type: String,
     },
     watchHistory: [
         {
@@ -53,7 +53,7 @@ userSchema.pre("save", async function (next) {
     } 
     this.password = await bcrypt.hash(this.password, 10)
     next()
-}) // save hone se phele kuch karvana ho toh kaam ata hai
+})
 
 userSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password)
@@ -62,10 +62,10 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         {
-            _id: this._id, // payloadname: database se joh ara hai
-            email: this.email, // payloadname: database se joh ara hai
-            username: this.username, // payloadname: database se joh ara hai
-            fullName: this.fullName // payloadname: database se joh ara hai
+            _id: this._id,
+            email: this.email,
+            username: this.username,
+            fullName: this.fullName
         },
         process.env.ACCESS_TOKEN_SECRET,
         {
@@ -86,5 +86,3 @@ userSchema.methods.generateRefreshToken = function () {
 }
 
 export const User = mongoose.model("User", userSchema)
-
-// if zyada searching hone wali hai koi cheej ki toh usme index daldo taki database ki searching mei ane lag jaye

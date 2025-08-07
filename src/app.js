@@ -9,26 +9,13 @@ app.use(cors({
     credentials: true
 }))
 
-app.use(express.json({limit: "16kb"})) // json se data aya toh kya karna hai uska middleware (.use middlewares ke liye hei use hota hai)
-
-app.use(express.urlencoded({extended: true, limit: "16kb"})) // url se data aya toh uske liye middleware
-
-app.use(express.static("public")) // kuch file jaise image/pdf ho joh khudke pass store rakhna hai khudke server par toh public folder bana dete hai store karne ke liye
-
-app.use(cookieParser()) // user ke browser ki cookies access and set kar pao so kuch ways se secure cookies store kar sakte hai aur sirf hei unko access kar sakta hai and server hei unko remove kar sakta hai
-
-// routes import 
+app.use(express.json({limit: "16kb"}))
+app.use(express.urlencoded({extended: true, limit: "16kb"}))
+app.use(express.static("public"))
+app.use(cookieParser())
 
 import userRouter from './routes/user.routes.js'
 
-
-// routes declaration
-
-// http://localhost:8000/api/v1/users/register 
-app.use("/api/v1/users", userRouter);  // we wont use app.get here directly we will pass the control to userRouter which will then call then redirect to
-// the route and call the method by passing the contoller
-
-
-
+app.use("/api/v1/users", userRouter);
 
 export default app;

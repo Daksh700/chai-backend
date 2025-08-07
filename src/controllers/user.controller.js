@@ -23,20 +23,7 @@ const generateAccessAndRefreshTokens = async(userId) => {
 }
 
 const registerUser = asyncHandler( async (req, res) => {
-    // get user details from frontend
-    // validation - not empty
-    // check if user already exists: username, email
-    // check for images, check for avatar
-    // upload them to cloudinary, avatar 
-    // create user object - create entry in db
-    // remove password and refresh token field from response
-    // check for user creation
-    // return response
-
-    console.log("reqBody: ", req.body);
-
     const {username, email, fullName, password} = req.body
-    console.log("Email: ", email);
 
     if([fullName, email, username, password].some((field) => field?.trim === "")) {
         throw new ApiError(400, "All fields are required");
@@ -50,10 +37,7 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(409, "User with email or username already exists")
     }
 
-    console.log("reqFiles: ", req.files);
-
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
 
     let coverImageLocalPath;
 
@@ -81,11 +65,9 @@ const registerUser = asyncHandler( async (req, res) => {
         username: username.toLowerCase()  
     })
 
-    console.log("User: ", user);
-
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
-    ) // .select will give every fields except the (-) strings 
+    )
 
     if(!createdUser) {
         throw new ApiError(500, "Something went wrong while registering the user")
@@ -97,12 +79,6 @@ const registerUser = asyncHandler( async (req, res) => {
 })
 
 const loginUser  = asyncHandler(async (req, res) => {
-    // get username/email and password from frontend
-    // hit the POST req from frontend to send it to the backend for validation
-    // compare the email and password of the user to the database to check and complete the validation
-    // give a access token and refresh token (send cookie)
-    // return user to the web page
-
     const {email, username, password} = req.body;
 
     if(!username && !email) {
@@ -127,12 +103,10 @@ const loginUser  = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
-    // cookies
-
     const options = {
         httpOnly: true,
         secure: true
-    } // cookies option for security
+    }
 
     return res.status(200)
     .cookie("accessToken", accessToken, options)
@@ -146,8 +120,6 @@ const loginUser  = asyncHandler(async (req, res) => {
             "User logged In successfully"
         )
     );
-
-
 })
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -160,7 +132,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         },
         {
             new: true
-        } // new taki old response nah mile kyuki refresh token nhi chaiye
+        }
     )
 
     const options = {
@@ -276,8 +248,6 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
             "Account details updated successfully"
         )
     )
-
-
 })
 
 const updateUserAvatar = asyncHandler(async (req, res) => {
@@ -342,8 +312,6 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
             "coverImage updated successfully"
         )
     )
-
-
 })
 
 const getUserChannelProfile = asyncHandler(async (req, res) => {
